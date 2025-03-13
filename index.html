@@ -1,395 +1,489 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Tic Tac Toe - Confetti Celebration</title>
-  <link rel="icon" type="image/png" href="assets/favicon.png">
-  <style>
-    body {
-      background: linear-gradient(to right, #4facfe, #00f2fe);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-      margin: 0;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tic Tac Toe - Responsive with Confetti</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-    h1 {
-      margin-top: 40px;
-      color: #fff;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    }
+      body {
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+      }
 
-    .controls {
-      margin: 20px 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+      h1 {
+        margin-top: 40px;
+        color: #fff;
+        text-align: center;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        font-size: 2.5rem;
+      }
 
-    .mode-selection, .first-move-selection {
-      margin-bottom: 10px;
-    }
+      .controls {
+        margin: 20px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
 
-    .mode-button, .first-move-button, .reset-button {
-      background: #fff;
-      color: #333;
-      border: none;
-      padding: 10px 20px;
-      margin: 5px;
-      font-size: 16px;
-      border-radius: 30px;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s, color 0.3s;
-    }
+      .mode-selection,
+      .first-move-selection {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 10px;
+        width: 100%;
+      }
 
-    .mode-button:hover, .first-move-button:hover, .reset-button:hover {
-      background-color: #333;
-      color: #fff;
-    }
+      .mode-button,
+      .first-move-button,
+      .reset-button {
+        background: #fff;
+        color: #333;
+        border: none;
+        padding: 12px 24px;
+        margin: 5px;
+        font-size: 1rem;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        flex: 1 1 40%;
+        max-width: 200px;
+      }
 
-    .active {
-      background-color: #333;
-      color: #fff;
-    }
+      .mode-button:hover,
+      .first-move-button:hover,
+      .reset-button:hover {
+        background-color: #333;
+        color: #fff;
+      }
 
-    .board {
-      display: grid;
-      grid-template-columns: repeat(3, 110px);
-      gap: 10px;
-      margin: 30px 0;
-      padding: 20px;
-      background: #fff;
-      border-radius: 15px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    }
+      .active {
+        background-color: #333;
+        color: #fff;
+      }
 
-    .cell {
-      width: 100px;
-      height: 100px;
-      background: #f7f7f7;
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.2s;
-      box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
-    }
+      .board {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin: 20px 0;
+        padding: 10px;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        width: 90vw;
+        max-width: 360px;
+        aspect-ratio: 1 / 1;
+      }
 
-    .cell:hover {
-      background-color: #e0e0e0;
-      transform: scale(1.05);
-    }
+      .cell {
+        background: #f7f7f7;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+      }
 
-    .cell.win {
-      background-color: #4caf50;
-      color: #fff;
-    }
+      .cell:hover {
+        background-color: #e0e0e0;
+        transform: scale(1.05);
+      }
 
-    .status {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 15px 30px;
-      border-radius: 30px;
-      font-size: 20px;
-      color: #333;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
+      .cell.win {
+        background-color: #4caf50;
+        color: #fff;
+      }
 
-    .reset-button {
-      margin-bottom: 30px;
-    }
+      .status {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 12px 26px;
+        border-radius: 30px;
+        font-size: 1.2rem;
+        color: #333;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        margin-top: 10px;
+        margin-bottom: 20px;
+        width: auto;
+        max-width: 300px;
+        min-height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      width: 100%;
-      height: 100%;
-      z-index: 9999;
-    }
-  </style>
-</head>
-<body>
+      .reset-button {
+        background: #fff;
+        color: #333;
+        border: none;
+        padding: 14px 24px;
+        font-size: 1rem;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: auto;
+        min-width: 180px;
+        max-height: 50px;
+        margin-top: 30px;
+      }
 
-  <h1>Tic Tac Toe</h1>
+      .reset-button:hover {
+        background-color: #333;
+        color: #fff;
+      }
 
-  <div class="controls">
-    <div class="mode-selection">
-      <button class="mode-button active" onclick="selectMode('player')">Player vs Player</button>
-      <button class="mode-button" onclick="selectMode('computer')">Player vs Computer</button>
+      canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 2rem;
+        }
+
+        .mode-button,
+        .first-move-button,
+        .reset-button {
+          padding: 10px 16px;
+          font-size: 0.9rem;
+          min-width: 140px;
+        }
+
+        .cell {
+          font-size: 2rem;
+        }
+
+        .status {
+          font-size: 1rem;
+          padding: 10px 12px;
+          min-height: 40px;
+          max-width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Tic Tac Toe</h1>
+
+    <div class="controls">
+      <div class="mode-selection">
+        <button class="mode-button active" onclick="selectMode('player')">
+          Player vs Player
+        </button>
+        <button class="mode-button" onclick="selectMode('computer')">
+          Player vs Computer
+        </button>
+      </div>
+
+      <div class="first-move-selection" id="firstMoveOptions">
+        <button
+          class="first-move-button active"
+          onclick="selectFirstPlayer('player')"
+        >
+          Player First
+        </button>
+        <button
+          class="first-move-button"
+          onclick="selectFirstPlayer('computer')"
+        >
+          Computer First
+        </button>
+      </div>
     </div>
 
-    <div class="first-move-selection" id="firstMoveOptions">
-      <button class="first-move-button active" onclick="selectFirstPlayer('player')">Player First</button>
-      <button class="first-move-button" onclick="selectFirstPlayer('computer')">Computer First</button>
-    </div>
-  </div>
+    <div class="board" id="board"></div>
 
-  <div class="board" id="board"></div>
+    <div class="status" id="status">Player X's turn</div>
+    <button class="reset-button" onclick="resetGame()">Reset Game</button>
 
-  <div class="status" id="status">Player X's turn</div>
-  <button class="reset-button" onclick="resetGame()" style="margin-top: 50px;">Reset Game</button>
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
 
-  <!-- Canvas for confetti -->
-  <canvas id="confetti-canvas"></canvas>
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
-  <!-- Confetti Library -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-
-  <script>
-    const boardElement = document.getElementById('board');
-    const statusElement = document.getElementById('status');
-    const modeButtons = document.querySelectorAll('.mode-button');
-    const firstMoveButtons = document.querySelectorAll('.first-move-button');
-    const firstMoveOptions = document.getElementById('firstMoveOptions');
-    const confettiCanvas = document.getElementById('confetti-canvas');
-    const confettiInstance = confetti.create(confettiCanvas, { resize: true });
-
-    let board = ['', '', '', '', '', '', '', '', ''];
-    let currentPlayer = 'X';
-    let isGameOver = false;
-    let mode = 'player'; // player or computer
-    let firstPlayer = 'player'; // player or computer
-    let computerFirstMoveDone = false;
-
-    function selectMode(selectedMode) {
-      mode = selectedMode;
-      modeButtons.forEach(btn => btn.classList.remove('active'));
-      if (mode === 'player') {
-        modeButtons[0].classList.add('active');
-        firstMoveOptions.style.display = 'none';
-      } else {
-        modeButtons[1].classList.add('active');
-        firstMoveOptions.style.display = 'flex';
-      }
-      resetGame();
-    }
-
-    function selectFirstPlayer(selectedFirst) {
-      firstPlayer = selectedFirst;
-      firstMoveButtons.forEach(btn => btn.classList.remove('active'));
-      if (firstPlayer === 'player') {
-        firstMoveButtons[0].classList.add('active');
-      } else {
-        firstMoveButtons[1].classList.add('active');
-      }
-      resetGame();
-    }
-
-    function createBoard() {
-      boardElement.innerHTML = '';
-      board.forEach((cell, idx) => {
-        const cellElement = document.createElement('div');
-        cellElement.classList.add('cell');
-        cellElement.textContent = cell;
-        cellElement.addEventListener('click', () => handleCellClick(idx));
-        boardElement.appendChild(cellElement);
+    <script>
+      const boardElement = document.getElementById("board");
+      const statusElement = document.getElementById("status");
+      const modeButtons = document.querySelectorAll(".mode-button");
+      const firstMoveButtons = document.querySelectorAll(".first-move-button");
+      const firstMoveOptions = document.getElementById("firstMoveOptions");
+      const confettiCanvas = document.getElementById("confetti-canvas");
+      const confettiInstance = confetti.create(confettiCanvas, {
+        resize: true,
       });
-    }
 
-    function handleCellClick(index) {
-      if (board[index] !== '' || isGameOver) return;
+      let board = ["", "", "", "", "", "", "", "", ""];
+      let currentPlayer = "X";
+      let isGameOver = false;
+      let mode = "player";
+      let firstPlayer = "player";
+      let computerFirstMoveDone = false;
 
-      board[index] = currentPlayer;
-      createBoard();
-
-      const winnerInfo = checkWinner(board);
-      if (winnerInfo) {
-        highlightWinningCells(winnerInfo.pattern);
-        endGame(winnerInfo.winner);
-        return;
+      function selectMode(selectedMode) {
+        mode = selectedMode;
+        modeButtons.forEach((btn) => btn.classList.remove("active"));
+        if (mode === "player") {
+          modeButtons[0].classList.add("active");
+          firstMoveOptions.style.display = "none";
+        } else {
+          modeButtons[1].classList.add("active");
+          firstMoveOptions.style.display = "flex";
+        }
+        resetGame();
       }
 
-      if (board.every(cell => cell !== '')) {
-        endGame(null);
-        return;
+      function selectFirstPlayer(selectedFirst) {
+        firstPlayer = selectedFirst;
+        firstMoveButtons.forEach((btn) => btn.classList.remove("active"));
+        if (firstPlayer === "player") {
+          firstMoveButtons[0].classList.add("active");
+        } else {
+          firstMoveButtons[1].classList.add("active");
+        }
+        resetGame();
       }
 
-      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      function createBoard() {
+        boardElement.innerHTML = "";
+        board.forEach((cell, idx) => {
+          const cellElement = document.createElement("div");
+          cellElement.classList.add("cell");
+          cellElement.textContent = cell;
+          cellElement.addEventListener("click", () => handleCellClick(idx));
+          boardElement.appendChild(cellElement);
+        });
+      }
 
-      if (mode === 'computer' && currentPlayer === 'O') {
-        statusElement.textContent = "Computer's turn";
-        setTimeout(() => {
-          computerMove();
-        }, 500);
-      } else {
+      function handleCellClick(index) {
+        if (board[index] !== "" || isGameOver) return;
+
+        board[index] = currentPlayer;
+        createBoard();
+
+        const winnerInfo = checkWinner(board);
+        if (winnerInfo) {
+          highlightWinningCells(winnerInfo.pattern);
+          endGame(winnerInfo.winner);
+          return;
+        }
+
+        if (board.every((cell) => cell !== "")) {
+          endGame(null);
+          return;
+        }
+
+        currentPlayer = currentPlayer === "X" ? "O" : "X";
+
+        if (mode === "computer" && currentPlayer === "O") {
+          statusElement.textContent = "Computer's turn";
+          setTimeout(() => {
+            computerMove();
+          }, 500);
+        } else {
+          statusElement.textContent = `Player ${currentPlayer}'s turn`;
+        }
+      }
+
+      function computerMove() {
+        let move;
+
+        if (!computerFirstMoveDone) {
+          move = getRandomMove(board);
+          computerFirstMoveDone = true;
+        } else {
+          move = getBestMove(board);
+        }
+
+        board[move] = "O";
+        createBoard();
+
+        const winnerInfo = checkWinner(board);
+        if (winnerInfo) {
+          highlightWinningCells(winnerInfo.pattern);
+          endGame(winnerInfo.winner);
+          return;
+        }
+
+        if (board.every((cell) => cell !== "")) {
+          endGame(null);
+          return;
+        }
+
+        currentPlayer = "X";
         statusElement.textContent = `Player ${currentPlayer}'s turn`;
       }
-    }
 
-    function computerMove() {
-      let move;
-
-      if (!computerFirstMoveDone) {
-        move = getRandomMove(board);
-        computerFirstMoveDone = true;
-      } else {
-        move = getBestMove(board);
+      function getRandomMove(bd) {
+        const emptyCells = bd
+          .map((cell, index) => (cell === "" ? index : null))
+          .filter((i) => i !== null);
+        const randomIndex = Math.floor(Math.random() * emptyCells.length);
+        return emptyCells[randomIndex];
       }
 
-      board[move] = 'O';
-      createBoard();
-
-      const winnerInfo = checkWinner(board);
-      if (winnerInfo) {
-        highlightWinningCells(winnerInfo.pattern);
-        endGame(winnerInfo.winner);
-        return;
-      }
-
-      if (board.every(cell => cell !== '')) {
-        endGame(null);
-        return;
-      }
-
-      currentPlayer = 'X';
-      statusElement.textContent = `Player ${currentPlayer}'s turn`;
-    }
-
-    function getRandomMove(bd) {
-      const emptyCells = bd.map((cell, index) => cell === '' ? index : null).filter(i => i !== null);
-      const randomIndex = Math.floor(Math.random() * emptyCells.length);
-      return emptyCells[randomIndex];
-    }
-
-    function getBestMove(newBoard) {
-      let bestScore = -Infinity;
-      let move;
-      for (let i = 0; i < newBoard.length; i++) {
-        if (newBoard[i] === '') {
-          newBoard[i] = 'O';
-          let score = minimax(newBoard, 0, false);
-          newBoard[i] = '';
-          if (score > bestScore) {
-            bestScore = score;
-            move = i;
+      function getBestMove(newBoard) {
+        let bestScore = -Infinity;
+        let move;
+        for (let i = 0; i < newBoard.length; i++) {
+          if (newBoard[i] === "") {
+            newBoard[i] = "O";
+            let score = minimax(newBoard, 0, false);
+            newBoard[i] = "";
+            if (score > bestScore) {
+              bestScore = score;
+              move = i;
+            }
           }
         }
+        return move;
       }
-      return move;
-    }
 
-    function minimax(boardState, depth, isMaximizing) {
-      const winnerInfo = checkWinner(boardState);
-      const winner = winnerInfo ? winnerInfo.winner : null;
-      if (winner === 'O') return 10 - depth;
-      if (winner === 'X') return depth - 10;
-      if (boardState.every(cell => cell !== '')) return 0;
+      function minimax(boardState, depth, isMaximizing) {
+        const winnerInfo = checkWinner(boardState);
+        const winner = winnerInfo ? winnerInfo.winner : null;
+        if (winner === "O") return 10 - depth;
+        if (winner === "X") return depth - 10;
+        if (boardState.every((cell) => cell !== "")) return 0;
 
-      if (isMaximizing) {
-        let maxEval = -Infinity;
-        for (let i = 0; i < boardState.length; i++) {
-          if (boardState[i] === '') {
-            boardState[i] = 'O';
-            let eval = minimax(boardState, depth + 1, false);
-            boardState[i] = '';
-            maxEval = Math.max(eval, maxEval);
+        if (isMaximizing) {
+          let maxEval = -Infinity;
+          for (let i = 0; i < boardState.length; i++) {
+            if (boardState[i] === "") {
+              boardState[i] = "O";
+              let eval = minimax(boardState, depth + 1, false);
+              boardState[i] = "";
+              maxEval = Math.max(eval, maxEval);
+            }
+          }
+          return maxEval;
+        } else {
+          let minEval = Infinity;
+          for (let i = 0; i < boardState.length; i++) {
+            if (boardState[i] === "") {
+              boardState[i] = "X";
+              let eval = minimax(boardState, depth + 1, true);
+              boardState[i] = "";
+              minEval = Math.min(eval, minEval);
+            }
+          }
+          return minEval;
+        }
+      }
+
+      function checkWinner(bd) {
+        const winPatterns = [
+          [0, 1, 2],
+          [3, 4, 5],
+          [6, 7, 8],
+          [0, 3, 6],
+          [1, 4, 7],
+          [2, 5, 8],
+          [0, 4, 8],
+          [2, 4, 6],
+        ];
+
+        for (let pattern of winPatterns) {
+          const [a, b, c] = pattern;
+          if (bd[a] && bd[a] === bd[b] && bd[a] === bd[c]) {
+            return { winner: bd[a], pattern };
           }
         }
-        return maxEval;
-      } else {
-        let minEval = Infinity;
-        for (let i = 0; i < boardState.length; i++) {
-          if (boardState[i] === '') {
-            boardState[i] = 'X';
-            let eval = minimax(boardState, depth + 1, true);
-            boardState[i] = '';
-            minEval = Math.min(eval, minEval);
-          }
-        }
-        return minEval;
-      }
-    }
-
-    function checkWinner(bd) {
-      const winPatterns = [
-        [0,1,2], [3,4,5], [6,7,8],
-        [0,3,6], [1,4,7], [2,5,8],
-        [0,4,8], [2,4,6]
-      ];
-
-      for (let pattern of winPatterns) {
-        const [a, b, c] = pattern;
-        if (bd[a] && bd[a] === bd[b] && bd[a] === bd[c]) {
-          return { winner: bd[a], pattern };
-        }
-      }
-      return null;
-    }
-
-    function highlightWinningCells(pattern) {
-      const cells = document.querySelectorAll('.cell');
-      pattern.forEach(index => {
-        cells[index].classList.add('win');
-      });
-    }
-
-    function endGame(winner) {
-      isGameOver = true;
-      if (winner) {
-        statusElement.textContent = `${winner === 'X' ? 'Player' : 'Computer'} (${winner}) wins! 🎉`;
-        launchConfetti();
-      } else {
-        statusElement.textContent = "It's a draw!";
-      }
-    }
-
-    function resetGame() {
-      board = ['', '', '', '', '', '', '', '', ''];
-      isGameOver = false;
-      computerFirstMoveDone = false;
-
-      if (mode === 'player') {
-        firstPlayer = 'player';
+        return null;
       }
 
-      currentPlayer = firstPlayer === 'player' ? 'X' : 'O';
-      statusElement.textContent = firstPlayer === 'player' ? `Player X's turn` : `Computer's turn`;
-
-      createBoard();
-
-      if (mode === 'computer' && firstPlayer === 'computer') {
-        setTimeout(() => {
-          computerMove();
-        }, 500);
-      }
-    }
-
-    function launchConfetti() {
-      const duration = 2 * 1000;
-      const end = Date.now() + duration;
-
-      (function frame() {
-        confettiInstance({
-          particleCount: 5,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0 }
+      function highlightWinningCells(pattern) {
+        const cells = document.querySelectorAll(".cell");
+        pattern.forEach((index) => {
+          cells[index].classList.add("win");
         });
-        confettiInstance({
-          particleCount: 5,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1 }
-        });
+      }
 
-        if (Date.now() < end) {
-          requestAnimationFrame(frame);
+      function endGame(winner) {
+        isGameOver = true;
+        if (winner) {
+          statusElement.textContent = `${
+            winner === "X" ? "Player" : "Computer"
+          } (${winner}) wins! 🎉`;
+          launchConfetti();
+        } else {
+          statusElement.textContent = "It's a draw!";
         }
-      })();
-    }
+      }
 
-    // Initialize
-    firstMoveOptions.style.display = 'none';
-    createBoard();
-  </script>
+      function resetGame() {
+        board = ["", "", "", "", "", "", "", "", ""];
+        isGameOver = false;
+        computerFirstMoveDone = false;
 
-</body>
+        if (mode === "player") {
+          firstPlayer = "player";
+        }
+
+        currentPlayer = firstPlayer === "player" ? "X" : "O";
+        statusElement.textContent =
+          firstPlayer === "player" ? `Player X's turn` : `Computer's turn`;
+
+        createBoard();
+
+        if (mode === "computer" && firstPlayer === "computer") {
+          setTimeout(() => {
+            computerMove();
+          }, 500);
+        }
+      }
+
+      function launchConfetti() {
+        const duration = 2 * 1000;
+        const end = Date.now() + duration;
+
+        (function frame() {
+          confettiInstance({
+            particleCount: 5,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+          });
+          confettiInstance({
+            particleCount: 5,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+          });
+
+          if (Date.now() < end) {
+            requestAnimationFrame(frame);
+          }
+        })();
+      }
+
+      // Initialize
+      firstMoveOptions.style.display = "none";
+      createBoard();
+    </script>
+  </body>
 </html>
